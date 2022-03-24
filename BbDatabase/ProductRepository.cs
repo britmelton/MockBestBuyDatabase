@@ -18,11 +18,27 @@ namespace BbDatabase
             this.connectionStringProvider = connectionStringProvider;
         }
 
-    public IEnumerable<Product> GetAllProducts()
+        public Product AssignCategory()
+        {
+            var categoryList = GetCategories();
+            var product = new Product();
+            product.Categories = categoryList;
+
+            return product;
+        }
+
+        public IEnumerable<Product> GetAllProducts()
         {
             using var conn = new MySqlConnection(connectionStringProvider.GetConnectionString());
             return conn.Query<Product>("SELECT * FROM PRODUCTS;");
         }
+
+        public IEnumerable<Category> GetCategories()
+        {
+            using var conn = new MySqlConnection(connectionStringProvider.GetConnectionString());
+            return conn.Query<Category>("SELECT * FROM categories;");
+        }
+
 
         public Product GetProduct(int id)
         {
@@ -31,11 +47,19 @@ namespace BbDatabase
                 new { id = id });
         }
 
+        public void InsertProduct(Product productToInsert)
+        {
+            using var conn = new MySqlConnection(connectionStringProvider.GetConnectionString());
+            conn.Execute("INSERT INTO products (NAME, PRICE, CATEGORYID) VALUES (@name, @price, @categoryID);",
+                new { name = productToInsert.Name, price = productToInsert.Price, categoryID = productToInsert.CategoryID });
+        }
+
+
         public void UpdateProduct(Product product)
         {
             using var conn = new MySqlConnection(connectionStringProvider.GetConnectionString());
             conn.Execute("UPDATE products SET Name = @name, Price = @price WHERE ProductID = @id",
-                new {name = product.Name, price = product.Price, id = product.ProductID});
+                new { name = product.Name, price = product.Price, id = product.ProductID });
         }
 
     }
