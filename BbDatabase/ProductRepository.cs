@@ -31,5 +31,12 @@ namespace BbDatabase
                 new { id = id });
         }
 
+        public void UpdateProduct(Product product)
+        {
+            using var conn = new MySqlConnection(connectionStringProvider.GetConnectionString());
+            conn.Execute("UPDATE products SET Name = @name, Price = @price WHERE ProductID = @id",
+                new {name = product.Name, price = product.Price, id = product.ProductID});
+        }
+
     }
 }
