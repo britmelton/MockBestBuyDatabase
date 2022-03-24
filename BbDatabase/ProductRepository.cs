@@ -18,10 +18,18 @@ namespace BbDatabase
             this.connectionStringProvider = connectionStringProvider;
         }
 
-        public IEnumerable<Product> GetAllProducts()
+    public IEnumerable<Product> GetAllProducts()
         {
             using var conn = new MySqlConnection(connectionStringProvider.GetConnectionString());
             return conn.Query<Product>("SELECT * FROM PRODUCTS;");
         }
+
+        public Product GetProduct(int id)
+        {
+            using var conn = new MySqlConnection(connectionStringProvider.GetConnectionString());
+            return conn.QuerySingle<Product>("SELECT * FROM PRODUCTS WHERE PRODUCTID = @id",
+                new { id = id });
+        }
+
     }
 }

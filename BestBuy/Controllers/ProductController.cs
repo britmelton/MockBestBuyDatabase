@@ -19,6 +19,14 @@ namespace BestBuy.Controllers
             return View(products);
         }
 
-     
+        public IActionResult ViewProduct(int id)
+        {
+            var product = _productRepository.GetProduct(id);
+
+            return View(product);
+        }
+
+
+
     }
 }
