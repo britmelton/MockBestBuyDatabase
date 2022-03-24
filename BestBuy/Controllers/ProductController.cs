@@ -12,6 +12,14 @@ namespace BestBuy.Controllers
         {
            _productRepository = productRepository;
         }
+
+        public IActionResult DeleteProduct(Product product)
+        {
+            _productRepository.DeleteProduct(product);
+
+            return RedirectToAction("Index");
+        }
+
         public IActionResult Index()
         {
             var products = _productRepository.GetAllProducts();

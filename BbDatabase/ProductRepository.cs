@@ -27,6 +27,18 @@ namespace BbDatabase
             return product;
         }
 
+        public void DeleteProduct(Product product)
+        {
+            using var conn = new MySqlConnection(connectionStringProvider.GetConnectionString());
+            conn.Execute("DELETE FROM REVIEWS WHERE ProductID = @id;",
+                                       new { id = product.ProductID });
+            conn.Execute("DELETE FROM Sales WHERE ProductID = @id;",
+                                       new { id = product.ProductID });
+            conn.Execute("DELETE FROM Products WHERE ProductID = @id;",
+                                       new { id = product.ProductID });
+        }
+
+
         public IEnumerable<Product> GetAllProducts()
         {
             using var conn = new MySqlConnection(connectionStringProvider.GetConnectionString());
