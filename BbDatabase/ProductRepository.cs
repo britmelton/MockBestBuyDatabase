@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,16 +11,17 @@ namespace BbDatabase
 {
     public class ProductRepository : IProductRepository
     {
-        private readonly IDbConnection _conn;
+        private readonly IConnectionStringProvider connectionStringProvider;
 
-        public ProductRepository(IDbConnection conn)
+        public ProductRepository(IConnectionStringProvider connectionStringProvider)
         {
-            _conn = conn;
+            this.connectionStringProvider = connectionStringProvider;
         }
 
         public IEnumerable<Product> GetAllProducts()
         {
-            return _conn.Query<Product>("SELECT * FROM PRODUCTS;");
+            using var conn = new MySqlConnection(connectionStringProvider.GetConnectionString());
+            return conn.Query<Product>("SELECT * FROM PRODUCTS;");
         }
     }
 }

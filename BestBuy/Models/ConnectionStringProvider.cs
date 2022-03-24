@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-
 namespace BbDatabase
 {
     public class ConnectionStringProvider : IConnectionStringProvider

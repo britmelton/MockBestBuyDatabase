@@ -6,17 +6,15 @@ namespace BestBuy.Controllers
     public class ProductController : Controller
     {
 
-        private readonly IProductRepository repo;
+        private readonly IProductRepository _productRepository;
 
-        public ProductController(IProductRepository repo)
+        public ProductController(IProductRepository productRepository)
         {
-            this.repo = repo;
+           _productRepository = productRepository;
         }
-
-        
         public IActionResult Index()
         {
-            var products = repo.GetAllProducts();
+            var products = _productRepository.GetAllProducts();
 
             return View(products);
         }
